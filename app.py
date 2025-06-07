@@ -11,7 +11,6 @@ app.secret_key = "🌸lovely-secret🌸"
 app.permanent_session_lifetime = timedelta(minutes=30)
 DB_FILE = "period.db"
 
-# 你的用户名密码
 USERNAME = "your-username"
 PASSWORD = "your-password"
 
