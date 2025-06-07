@@ -9,8 +9,8 @@ A lightweight, user-friendly period tracking web app built with Flask. This app 
 ### 1. Clone the Repository and Install Dependencies
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+git clone https://github.com/bbbjiangggg/PeriodTracker.git
+cd PeriodTracker
 conda env create -f environment.yml
 conda activate period
 ```
@@ -20,4 +20,4 @@ conda activate period
 ```bash
 python app.py
 ```
-The log-in user name and password are defaulted at "your-username" and "your-password". These can be easily modified in app.py.
+The log-in user name and password are defaulted to "your-username" and "your-password". These can be easily modified in app.py.
