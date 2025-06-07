@@ -22,9 +22,19 @@ python app.py
 ```
 The log-in user name and password are defaulted to "your-username" and "your-password". These can be easily modified in app.py.
 
+### Log in page
+Simple login form to authenticate user access.
+
 ![Diagram](Demonstration/ss1.png)
+
+### Statistics Dashboard
+Displays average cycle length, predicted ovulation day, and other key stats.
 
 ![Diagram](Demonstration/ss2.png)
 
+### Calendar Tracker
+Interactive calendar to mark and review period days.
+
 ![Diagram](Demonstration/ss3.png)
+
 
