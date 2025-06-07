@@ -21,3 +21,10 @@ conda activate period
 python app.py
 ```
 The log-in user name and password are defaulted to "your-username" and "your-password". These can be easily modified in app.py.
+
+![Diagram](Demonstration/ss1.png)
+
+![Diagram](Demonstration/ss2.png)
+
+![Diagram](Demonstration/ss3.png)
+
