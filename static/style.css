@@ -1,0 +1,155 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(to bottom, #ffe6f0, #fff);
+    margin: 0;
+    padding: 20px;
+    color: #d63384;
+  }
+  
+  h1 {
+    font-size: 2em;
+    text-align: center;
+    margin-bottom: 0;
+  }
+  
+  .subtitle {
+    text-align: center;
+    font-size: 1.1em;
+    color: #a0266b;
+    margin-top: 5px;
+  }
+  
+  .stats {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px auto;
+    max-width: 900px;
+  }
+  
+  .stat-box {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    padding: 20px;
+    flex: 1;
+    margin: 0 10px;
+    text-align: center;
+  }
+  
+  .stat-box h3 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  
+  .stat-box p {
+    font-size: 2em;
+    margin: 10px 0;
+    font-weight: bold;
+  }
+  
+  .calendar-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  
+  #calendar {
+    margin-top: 20px;
+  }
+  
+  .footer {
+    text-align: center;
+    font-size: 0.9em;
+    color: #999;
+    margin-top: 40px;
+  }
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(255, 224, 238, 0.9);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: auto;
+  padding: 30px;
+  border: 2px solid #ff8fa3;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  color: #d63384;
+  text-align: center;
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-family: 'Inter', sans-serif;
+  resize: none;
+  font-size: 1em;
+  margin-top: 10px;
+}
+
+.modal-content button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #ff8fa3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.modal-content button:hover {
+  background-color: #e45c82;
+}
+
+.download-button {
+  background-color: #ff8fa3;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 10px;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #e45c82;
+}
+
+@media (max-width: 768px) {
+  .stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .stat-box {
+    width: 90%;
+    margin: 10px 0;
+  }
+
+  .calendar-container {
+    width: 95%;
+    margin: 0 auto;
+  }
+}
+

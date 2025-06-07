@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <title>💕 登录小站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("{{ url_for('static', filename=background) }}") no-repeat center center fixed;
+            background-size: cover;
+            filter: blur(8px);
+            background-color: rgba(255, 220, 235, 0.3);
+            background-blend-mode: lighten;
+            z-index: -1;
+        }
+
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            color: #d63384;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-container h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .login-container input {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        .login-container button {
+            padding: 12px 24px;
+            background-color: #ff8fa3;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        .login-container button:hover {
+            background-color: #e45c82;
+        }
+
+        .error-msg {
+            margin-top: 10px;
+            color: #ff4d4d;
+            font-weight: bold;
+        }
+
+        @media (max-width: 500px) {
+            .login-container {
+                padding: 30px 20px;
+                font-size: 0.95em;
+            }
+
+            .login-container input {
+                width: 100%;
+            }
+
+            .login-container h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>🌸 小企鹅来啦 🌸</h2>
+        <form method="POST">
+            <input type="text" name="username" placeholder="用户名" required><br>
+            <input type="password" name="password" placeholder="密码" required><br>
+            <button type="submit">进入记录小站</button>
+        </form>
+        {% if error %}
+        <div class="error-msg">{{ error }}</div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

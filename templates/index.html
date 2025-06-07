@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>💕 Period Record Station</title>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>💕 Period Record Station</h1>
+  <h2 class="subtitle">Recording with love 🌸</h2>
+
+  <div class="stats">
+    <div class="stat-box">
+      <h3>🗓️ From last period</h3>
+      <p id="days-since">
+        {% if records %}
+          {{ (now.date() - records[0].date()).days }}
+        {% else %}
+          -
+        {% endif %}
+      </p>
+      <div>days</div>
+    </div>
+    <div class="stat-box">
+      <h3>💖 Total record</h3>
+      <p id="total-days">-</p>
+      <div>times</div>
+    </div>
+    <div class="stat-box">
+      <h3>📌 Closest</h3>
+      <p id="last-period">
+        {% if records %}
+          {{ records[0].strftime('%Y-%m-%d') }}
+        {% else %}
+          -
+        {% endif %}
+      </p>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat-box">
+      <h3>🧬 Ovulation countdown</h3>
+      <p id="ovulation-countdown">-</p>
+      <div>days</div>
+    </div>
+    <div class="stat-box">
+      <h3>📊 Average period length</h3>
+      <p id="avg-interval">-</p>
+      <div>days</div>
+    </div>
+    <div class="stat-box">
+      <h3>🔮 Forecast</h3>
+      <p id="next-period">-</p>
+    </div>
+  </div>
+
+  <div class="calendar-container">
+    <h3>📅 Period Calendar</h3>
+    <p>Slide to select, click to delete</p>
+    <div id="calendar"></div>
+  </div>
+
+  <div style="text-align: center; margin-top: 40px;">
+    <a href="/download_records" class="download-button">📥 下载全部记录</a>
+  </div>  
+
+  <div style="text-align: center; margin-top: 40px;">
+    <a href="/logout" class="download-button">🚪 登出</a>
+  </div>
+
+  <div class="footer">
+    Stay healthy ❤️ 
+  </div>
+
+  <!-- Modal for reflection input -->
+  <div id="reflection-modal" class="modal">
+    <div class="modal-content">
+      <h3>📝 Write down your feelings and save (optional) </h3>
+      <textarea id="reflection-text" placeholder="eg：this time hurts…"></textarea>
+      <div class="modal-buttons">
+        <button id="save-reflection">Save</button>
+        <button class="cancel" id="cancel-reflection">Skip</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const existingEvents = new Set(JSON.parse('{{ record_dates_str | tojson | safe }}'));
+      const modal = document.getElementById("reflection-modal");
+      const textarea = document.getElementById("reflection-text");
+      const saveBtn = document.getElementById("save-reflection");
+      const cancelBtn = document.getElementById("cancel-reflection");
+
+      let tempStart = null;
+      let tempEnd = null;
+
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        selectable: true,
+        validRange: {end: new Date()},
+        events: JSON.parse('{{ events | tojson | safe }}'),
+        select: function(info) {
+          const start = info.startStr;
+          const end = new Date(info.end);
+          end.setDate(end.getDate() - 1);
+          const endStr = end.toISOString().split("T")[0];
+
+          const selectedDates = [];
+          let current = new Date(start);
+          while (current <= end) {
+            selectedDates.push(current.toISOString().split("T")[0]);
+            current.setDate(current.getDate() + 1);
+          }
+
+          const allExist = selectedDates.every(date => existingEvents.has(date));
+
+          if (allExist) {
+            selectedDates.forEach(date => {
+              fetch("/delete", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `date=${date}`
+              }).then(res => res.json()).then(data => {
+                if (data.success) {
+                  existingEvents.delete(date);
+                  calendar.getEvents().forEach(event => {
+                    if (event.startStr === date) {
+                      event.remove();
+                    }
+                  });
+                  updateStats();
+                }
+              });
+            });
+            return;
+          }
+
+          tempStart = start;
+          tempEnd = endStr;
+          modal.style.display = 'block';
+        }
+      });
+
+      calendar.render();
+      updateStats();
+
+      function updateStats() {
+        fetch('/stats')
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("days-since").innerText = data.days_since;
+            document.getElementById("total-days").innerText = data.total_days;
+            document.getElementById("last-period").innerText = data.last_period;
+            document.getElementById("ovulation-countdown").innerText = data.ovulation_countdown;
+            document.getElementById("avg-interval").innerText = data.avg_interval;
+            document.getElementById("next-period").innerText = data.next_period;
+          });
+      }
+
+      saveBtn.onclick = () => {
+        const formData = new URLSearchParams();
+        formData.append("start_date", tempStart);
+        formData.append("end_date", tempEnd);
+        formData.append("note", textarea.value); 
+
+        fetch("/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData
+        }).then(() => {
+          let current = new Date(tempStart);
+          const end = new Date(tempEnd);
+          while (current <= end) {
+            const dateStr = current.toISOString().split("T")[0];
+            if (!existingEvents.has(dateStr)) {
+              calendar.addEvent({
+                title: "Period",
+                start: dateStr,
+                allDay: true,
+                backgroundColor: "#ff8fa3",
+                borderColor: "#ff8fa3"
+              });
+              existingEvents.add(dateStr);
+            }
+            current.setDate(current.getDate() + 1);
+          }
+          updateStats();
+          modal.style.display = 'none';
+          textarea.value = '';
+        });
+      };
+
+      cancelBtn.onclick = () => {
+        modal.style.display = 'none';
+        textarea.value = '';
+      };
+    });
+  </script>
+</body>
+</html>
