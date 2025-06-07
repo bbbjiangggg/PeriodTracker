@@ -33,7 +33,7 @@ Displays average cycle length, predicted ovulation day, and other key stats.
 ![Diagram](Demonstration/ss2.png)
 
 ### Calendar Tracker
-Interactive calendar to mark and review period days.
+Interactive calendar to mark and review period days and personal feelings.
 
 ![Diagram](Demonstration/ss3.png)
 
